@@ -25,11 +25,11 @@ endif
 ifneq ($(strip $(CXX_DEPS)),)
 -include $(CXX_DEPS)
 endif
-ifneq ($(strip $(C_DEPS)),)
--include $(C_DEPS)
-endif
 ifneq ($(strip $(CPP_DEPS)),)
 -include $(CPP_DEPS)
+endif
+ifneq ($(strip $(C_DEPS)),)
+-include $(C_DEPS)
 endif
 endif
 
@@ -38,19 +38,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: projekt-alg
+all: Trees-algorithm-course
 
 # Tool invocations
-projekt-alg: $(OBJS) $(USER_OBJS)
+Trees-algorithm-course: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
-	@echo 'Invoking: Cross G++ Linker'
-	g++  -o "projekt-alg" $(OBJS) $(USER_OBJS) $(LIBS)
+	@echo 'Invoking: GCC C++ Linker'
+	g++  -o "Trees-algorithm-course" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(OBJS)$(C_UPPER_DEPS)$(CXX_DEPS)$(C_DEPS)$(CPP_DEPS) projekt-alg
+	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(C_UPPER_DEPS)$(CXX_DEPS)$(OBJS)$(CPP_DEPS)$(C_DEPS) Trees-algorithm-course
 	-@echo ' '
 
 .PHONY: all clean dependents
