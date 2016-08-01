@@ -1,15 +1,16 @@
-#pragma once
+#ifndef BINARYTREE_H_
+#define BINARYTREE_H_
 
 #include <SFML/Graphics.hpp>
-#include "TreeNode.h"
+#include "BinaryTreeNode.h"
 
 class BinaryTree
 {
 private:
-	TreeNode* root;
+	BinaryTreeNode* root;
 
 	// Recursive private function of Draw
-	void Draw(sf::RenderWindow* window, TreeNode* toDraw);
+	void Draw(sf::RenderWindow* window, BinaryTreeNode* toDraw);
 
 public:
 	BinaryTree();
@@ -19,4 +20,6 @@ public:
 	// Draws the tree
 	void Draw(sf::RenderWindow* window);
 };
+
+#endif
 

@@ -1,15 +1,15 @@
-#pragma once
-
 #include <SFML/Graphics.hpp>
-//#include "BinaryTree.h"
+#include "BinaryTree.h"
+#include "TernaryTree.h"
 
 #include <iostream>
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1920, 640), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(1920, 640), "Ternary Tree comparison");
 
-	//BinaryTree bt = BinaryTree(8);
+	BinaryTree bt = BinaryTree(5);
+	TernaryTree tt = TernaryTree(5);
 
 	// create a view with the rectangular area of the 2D world to show
 	sf::View view = window.getDefaultView();
@@ -66,13 +66,13 @@ int main()
 				{
 					if (event.mouseWheelScroll.delta > 0)
 					{
-						zoom -= 0.1f;
+						zoom -= 0.5f;
 						view.setSize(window.getDefaultView().getSize());
 						view.zoom(zoom);
 					}
 					else if (event.mouseWheelScroll.delta < 0)
 					{
-						zoom += 0.1f;
+						zoom += 0.5f;
 						view.setSize(window.getDefaultView().getSize());
 						view.zoom(zoom);
 					}
@@ -84,7 +84,8 @@ int main()
 
 		window.clear();
 		
-		//bt.Draw(&window);
+		bt.Draw(&window);
+		tt.Draw(&window);
 
 		window.display();
 	}

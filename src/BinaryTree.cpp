@@ -2,14 +2,13 @@
 
 BinaryTree::BinaryTree()
 {
-	root = new TreeNode(0);
+	root = new BinaryTreeNode(0);
 }
 
 BinaryTree::BinaryTree(int lvl)
 {
-	root = new TreeNode(lvl);
+	root = new BinaryTreeNode(lvl);
 }
-
 
 BinaryTree::~BinaryTree()
 {
@@ -17,7 +16,7 @@ BinaryTree::~BinaryTree()
 }
 
 
-void BinaryTree::Draw(sf::RenderWindow* window, TreeNode* toDraw)
+void BinaryTree::Draw(sf::RenderWindow* window, BinaryTreeNode* toDraw)
 {
 	if (toDraw != nullptr)
 	{

@@ -1,19 +1,4 @@
-/*
- * TernaryTreeNode.cpp
- *
- *  Created on: 14 jul 2016
- *      Author: zacharias
- */
-
 #include "TernaryTreeNode.h"
-
-sf::Vertex* TernaryTreeNode::NewLine(float xp, float yp, float xc, float yc)
-{
-	sf::Vertex* line = new sf::Vertex[2];
-	line[0] = sf::Vertex(sf::Vector2f(xp, yp));
-	line[1] = sf::Vertex(sf::Vector2f(xc, yc));
-	return line;
-}
 
 void TernaryTreeNode::CreateLines()
 {
@@ -39,6 +24,7 @@ void TernaryTreeNode::CreateLines()
 	rightLine = NewLine(x, y, xr, yr);
 }
 
+// Used for root node
 TernaryTreeNode::TernaryTreeNode(int lvl)
 {
 	body = sf::RectangleShape(sf::Vector2f(30.0f, 30.0f));
@@ -64,30 +50,35 @@ TernaryTreeNode::TernaryTreeNode(int lvl)
 	}
 }
 
-TernaryTreeNode::TernaryTreeNode(TreeNode* parent, int lvl)
+// Used for other nodes
+TernaryTreeNode::TernaryTreeNode(TernaryTreeNode* parent, int lvl)
 {
-//	float xOffset = 5.0f;
-//	float yOffset = 15.0f;
+	float xOffset = 15.0f;
+	float yOffset = 15.0f;
 
 	body = sf::RectangleShape(sf::Vector2f(30.0f, 30.0f));
 	body.setFillColor(sf::Color::Cyan);
 	body.setOutlineColor(sf::Color::Black);
 	body.setOutlineThickness(1.0f);
-//
-//	this->parent = parent;
-//	float y = parent->body.getPosition().y + (body.getSize().y * 5) + yOffset;
-//	float x = 0;
-//	if (parent->left == nullptr)
-//	{
-//		x = parent->body.getPosition().x - 15.0f;
-//		x -= 30.0f * (std::pow(2, lvl) - 1) + xOffset;
-//	}
-//	else if (parent->right == nullptr)
-//	{
-//		x = parent->body.getPosition().x + 15.0f;
-//		x += 30.0f * (std::pow(2, lvl) - 1) + xOffset;
-//	}
-//	body.setPosition({ x, y });
+
+	this->parent = parent;
+	float y = parent->body.getPosition().y + (body.getSize().y * 5) + yOffset;
+	float x = 0;
+	if (parent->middle == nullptr)
+	{
+		x = parent->body.getPosition().x;
+	}
+	else if (parent->left == nullptr)
+	{
+		x = parent->body.getPosition().x - 15.0f;
+		x -= 35.0f * (std::pow(3, lvl) - 1) + xOffset;
+	}
+	else if (parent->right == nullptr)
+	{
+		x = parent->body.getPosition().x + 15.0f;
+		x += 35.0f * (std::pow(3, lvl) - 1) + xOffset;
+	}
+	body.setPosition({ x, y });
 
 	middle 	= nullptr;
 	left 	= nullptr;
@@ -101,7 +92,8 @@ TernaryTreeNode::TernaryTreeNode(TreeNode* parent, int lvl)
 	}
 }
 
-TernaryTreeNode::~TernaryTreeNode() {
+TernaryTreeNode::~TernaryTreeNode()
+{
 	if (middle != nullptr)
 	{
 		delete middle;
@@ -118,4 +110,3 @@ TernaryTreeNode::~TernaryTreeNode() {
 		delete rightLine;
 	}
 }
-

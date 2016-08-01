@@ -1,18 +1,19 @@
 #ifndef TERNARYTREENODE_H_
 #define TERNARYTREENODE_H_
 
+#include "TreeNode.h"
 #include "SFML/Graphics.hpp"
 
-class TernaryTreeNode {
+class TernaryTreeNode : TreeNode
+{
 private:
-	sf::Vertex* NewLine(float xp, float yp, float xc, float yc);
 	void CreateLines();
 public:
 	// Used for root node
 	TernaryTreeNode(int lvl);
 
 	// Used for other nodes
-	TernaryTreeNode(TreeNode* parent, int lvl);
+	TernaryTreeNode(TernaryTreeNode* parent, int lvl);
 
 	virtual ~TernaryTreeNode();
 
