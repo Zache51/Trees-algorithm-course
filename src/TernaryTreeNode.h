@@ -7,17 +7,16 @@
 class TernaryTreeNode : TreeNode
 {
 private:
-	void CreateLines();
+
 public:
-	// Used for root node
-	TernaryTreeNode(int lvl);
 
-	// Used for other nodes
-	TernaryTreeNode(TernaryTreeNode* parent, int lvl);
+	TernaryTreeNode();
 
-	virtual ~TernaryTreeNode();
+	virtual ~TernaryTreeNode(){};
 
-	TernaryTreeNode* parent;
+	void CreateLines();
+
+	//int parent;
 	TernaryTreeNode* middle;
 	TernaryTreeNode* left;
 	TernaryTreeNode* right;

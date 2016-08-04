@@ -7,7 +7,13 @@
 class TernaryTree
 {
 private:
-	TernaryTreeNode* root;
+	int size;
+	int counter;
+	TernaryTreeNode** treeNodes;
+
+	//TernaryTreeNode* root;
+
+	void CreateNode(TernaryTreeNode* parent, int lvl);
 
 	// Recursive private function of Draw
 	void Draw(sf::RenderWindow* window, TernaryTreeNode* toDraw);

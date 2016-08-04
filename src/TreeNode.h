@@ -9,11 +9,11 @@
 #define TREENODE_H_
 
 #include "SFML/Graphics.hpp"
+#include <cmath>
 
 class TreeNode {
 protected:
 	virtual sf::Vertex* NewLine(float xp, float yp, float xc, float yc);
-	virtual void CreateLines() = 0;
 
 public:
 	TreeNode();
