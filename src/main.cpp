@@ -4,13 +4,17 @@
 
 #include <iostream>
 
+TernaryTree* ttr = new TernaryTree(12);
+TernaryTree* ttr2 = new TernaryTree(12);
+
+bool render = false;
+bool drawCompleted = false;
+bool creationOngoing = false;
+
+sf::RenderWindow window(sf::VideoMode(1920, 640), "Ternary Tree comparison");
+
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1920, 640), "Ternary Tree comparison");
-
-	BinaryTree bt = BinaryTree(5);
-	TernaryTree tt = TernaryTree(5);
-
 	// create a view with the rectangular area of the 2D world to show
 	sf::View view = window.getDefaultView();
 
@@ -19,7 +23,12 @@ int main()
 
 	bool drag = false;
 
-	float zoom = 1.0f;
+	float zoom = 30.0f;
+	view.setSize(window.getDefaultView().getSize());
+	view.zoom(zoom);
+	window.setView(view);
+
+	int counter = 0;
 
 	while (window.isOpen())
 	{
@@ -66,29 +75,83 @@ int main()
 				{
 					if (event.mouseWheelScroll.delta > 0)
 					{
-						zoom -= 0.5f;
+						zoom -= 5.0f;
 						view.setSize(window.getDefaultView().getSize());
 						view.zoom(zoom);
 					}
 					else if (event.mouseWheelScroll.delta < 0)
 					{
-						zoom += 0.5f;
+						zoom += 5.0f;
 						view.setSize(window.getDefaultView().getSize());
 						view.zoom(zoom);
 					}
 					window.setView(view);
 				}
-				std::cout << "X:" << view.getSize().x << " Y:" << view.getSize().y << std::endl;
 			}
 		}
 
 		window.clear();
-		
-		bt.Draw(&window);
-		tt.Draw(&window);
+		if (counter == 0)
+		{
+			window.display();
 
-		window.display();
+			std::cout << "Test starts in 3 seconds" << std::endl;
+			sf::sleep(sf::seconds(3));
+		}
+		else if (counter == 1)
+		{
+			// Ternary tree recursive code
+
+			// Instancing and creating
+			ttr->CreateNodes();
+			std::cout << "Ternary Tree: " << ttr->getTimeTaken().asMilliseconds() << " milliseconds" << std::endl;
+
+			// Graphics stuff
+			std::cout << "Drawing tree" << std::endl;
+			ttr->Draw2(&window);
+			std::cout << "Drawing of tree completed" << std::endl;
+			window.display();
+
+			// Destroy tree
+			delete ttr;
+			ttr = nullptr;
+		}
+		else if (counter == 2)
+		{
+			// Separator
+			std::cout << "Wait 3 seconds for next tree" << std::endl;
+			sf::sleep((sf::seconds(3)));
+			window.display();
+		}
+		else if (counter == 3)
+		{
+			// Ternary tree recursive2 code
+
+			// Instancing and creating
+			ttr2->CreateNodes();
+			std::cout << "Ternary Tree: " << ttr2->getTimeTaken().asMilliseconds() << " milliseconds" << std::endl;
+
+			// Graphics stuff
+			std::cout << "Drawing tree" << std::endl;
+			ttr2->Draw2(&window);
+			std::cout << "Drawing of tree completed" << std::endl;
+			window.display();
+
+			std::cout << "Test completed" << std::endl;
+		}
+		else
+		{
+			// Graphics stuff
+			ttr2->Draw(&window);
+			window.display();
+		}
+
+		counter++;
 	}
+
+	// Destroy tree
+	delete ttr2;
+	ttr2 = nullptr;
 
 	return 0;
 }

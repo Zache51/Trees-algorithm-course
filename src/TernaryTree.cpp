@@ -1,18 +1,30 @@
 #include "TernaryTree.h"
-
+#include <iostream>
 TernaryTree::TernaryTree()
 {
-	//root = new TernaryTreeNode(0);
+	creationCompleted = false;
+	creationOngoing = false;
+	drawOngoing = false;
+	drawCompleted = false;
+
+	counter = 0;
 
 	size = 1;
 	treeNodes = new TernaryTreeNode*[size];
 	treeNodes[0] = new TernaryTreeNode();
 	treeNodes[0]->body = sf::RectangleShape(sf::Vector2f(30.0f, 30.0f));
+
+	lvl = 0;
 }
 
 TernaryTree::TernaryTree(int lvl)
 {
-	//root = new TernaryTreeNode(lvl);
+	creationCompleted = false;
+	creationOngoing = false;
+	drawOngoing = false;
+	drawCompleted = false;
+
+	counter = 0;
 
 	size = 1;
 	for (int i = 1; i < lvl + 1; i++)
@@ -26,33 +38,69 @@ TernaryTree::TernaryTree(int lvl)
 		treeNodes[i] = new TernaryTreeNode();
 	}
 
+	this->lvl = lvl;
 
 
-	TernaryTreeNode* root = treeNodes[0];
-	counter++;
-	treeNodes[0]->body = sf::RectangleShape(sf::Vector2f(30.0f, 30.0f));
-
-	if (lvl != 0)
-	{
-		// new index = last created + 1
-
-		CreateNode(root, lvl - 1);
-		CreateNode(root, lvl - 1);
-		CreateNode(root, lvl - 1);
-
-		root->CreateLines();
-	}
 }
 
 TernaryTree::~TernaryTree()
 {
 	//delete root;
 
+	std::cout << "Destructor called" << std::endl;
+
 	for (int i = 0; i < size; i++)
 	{
 		delete treeNodes[i];
+		treeNodes[i] = nullptr;
 	}
-	delete [] treeNodes;
+	delete[] treeNodes;
+	treeNodes = nullptr;
+}
+
+void TernaryTree::CreateNode(TernaryTreeNode* parent, int lvl)
+{
+	TernaryTreeNode* current = treeNodes[counter];
+	counter++;
+
+	float xOffset = 15.0f;
+	float yOffset = 15.0f * std::pow(lvl, 2);
+
+	// Set correct position for the node
+	float y = parent->body.getPosition().y + (current->body.getSize().y * 5) + yOffset;
+	float x = parent->body.getPosition().x;
+
+	if (parent->middle == nullptr)
+	{
+		parent->middle = current;
+	}
+	else if (parent->left == nullptr)
+	{
+		parent->left = current;
+		x -= 15.0f;
+		x -= 35.0f * (std::pow(3, lvl) - 1) + xOffset;
+	}
+	else if (parent->right == nullptr)
+	{
+		parent->right = current;
+		x += 15.0f;
+		x += 35.0f * (std::pow(3, lvl) - 1) + xOffset;
+	}
+	current->body.setPosition({ x, y });
+
+//	if (counter % 1 == 0)
+//	{
+//		sf::sleep(sf::microseconds(10));
+//	}
+
+	if (lvl != 0)
+	{
+		CreateNode(current, lvl - 1);
+		CreateNode(current, lvl - 1);
+		CreateNode(current, lvl - 1);
+
+		current->CreateLines();
+	}
 }
 
 void TernaryTree::Draw(sf::RenderWindow* window, TernaryTreeNode* toDraw)
@@ -79,43 +127,28 @@ void TernaryTree::Draw(sf::RenderWindow* window, TernaryTreeNode* toDraw)
 	}
 }
 
-void TernaryTree::CreateNode(TernaryTreeNode* parent, int lvl)
+void TernaryTree::CreateNodes()
 {
-	TernaryTreeNode* current = treeNodes[counter];
+	TernaryTreeNode* root = treeNodes[0];
 	counter++;
-
-	float xOffset = 15.0f;
-	float yOffset = 15.0f;
-
-	// Set correct position for the node
-	float y = parent->body.getPosition().y + (current->body.getSize().y * 5) + yOffset;
-	float x = parent->body.getPosition().x;
-
-	if (parent->middle == nullptr)
-	{
-		parent->middle = current;
-	}
-	else if (parent->left == nullptr)
-	{
-		parent->left = current;
-		x -= 15.0f;
-		x -= 35.0f * (std::pow(3, lvl) - 1) + xOffset;
-	}
-	else if (parent->right == nullptr)
-	{
-		parent->right = current;
-		x += 15.0f;
-		x += 35.0f * (std::pow(3, lvl) - 1) + xOffset;
-	}
-	current->body.setPosition({ x, y });
+	treeNodes[0]->body = sf::RectangleShape(sf::Vector2f(30.0f, 30.0f));
+	treeNodes[0]->body.setPosition(0, -15.0f * pow(lvl, 2));
 
 	if (lvl != 0)
 	{
-		CreateNode(current, lvl - 1);
-		CreateNode(current, lvl - 1);
-		CreateNode(current, lvl - 1);
+		sf::Clock clock = sf::Clock();
+		creationOngoing = true;
 
-		current->CreateLines();
+		CreateNode(root, lvl - 1);
+		CreateNode(root, lvl - 1);
+		CreateNode(root, lvl - 1);
+
+		root->CreateLines();
+
+		creationOngoing = false;
+		creationCompleted = true;
+
+		timeTaken = clock.getElapsedTime();
 	}
 }
 
@@ -128,5 +161,33 @@ void TernaryTree::Draw(sf::RenderWindow* window)
 	if (size > 0)
 	{
 		Draw(window, treeNodes[0]);
+	}
+}
+
+void TernaryTree::Draw2(sf::RenderWindow* window)
+{
+	if (size > 0)
+	{
+		drawCompleted = false;
+		int max = counter - 1;
+		for(int i = 0; i < max; i++)
+		{
+			window->draw(treeNodes[i]->body);
+			if (treeNodes[i]->middleLine != nullptr)
+			{
+				window->draw(treeNodes[i]->middleLine, 2, sf::Lines);
+			}
+			if (treeNodes[i]->leftLine != nullptr)
+			{
+				window->draw(treeNodes[i]->leftLine, 2, sf::Lines);
+			}
+			if (treeNodes[i]->rightLine != nullptr)
+			{
+				window->draw(treeNodes[i]->rightLine, 2, sf::Lines);
+			}
+		}
+		beginDraw = max;
+
+		if (counter == size) drawCompleted = true;
 	}
 }

@@ -34,4 +34,20 @@ TernaryTreeNode::TernaryTreeNode()
 	middle 	= nullptr;
 	left 	= nullptr;
 	right 	= nullptr;
+
+	middleLine = nullptr;
+	rightLine = nullptr;
+	leftLine = nullptr;
+}
+
+TernaryTreeNode::~TernaryTreeNode()
+{
+	delete middleLine;
+	middleLine = nullptr;
+
+	delete rightLine;
+	rightLine = nullptr;
+
+	delete leftLine;
+	leftLine = nullptr;
 }

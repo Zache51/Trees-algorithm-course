@@ -12,7 +12,7 @@ public:
 
 	TernaryTreeNode();
 
-	virtual ~TernaryTreeNode(){};
+	~TernaryTreeNode();
 
 	void CreateLines();
 
