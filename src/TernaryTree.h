@@ -12,6 +12,8 @@ private:
 	int counter;
 	TernaryTreeNode* treeNodes;
 
+	float yStart;
+
 	int beginDraw = 0;
 
 	sf::Time timeTaken;
@@ -32,7 +34,7 @@ private:
 
 public:
 	TernaryTree();
-	TernaryTree(int lvl);
+	TernaryTree(int lvl, float yStart);
 	virtual ~TernaryTree();
 
 	// Creates the tree structure recursively

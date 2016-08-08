@@ -1,7 +1,12 @@
 #include "TernaryTree.h"
 #include <iostream>
+
+// Constructors and Destructor
+
 TernaryTree::TernaryTree()
 {
+	yStart = 0;
+
 	creationCompleted = false;
 	creationOngoing = false;
 	drawOngoing = false;
@@ -19,8 +24,10 @@ TernaryTree::TernaryTree()
 	lvl = 0;
 }
 
-TernaryTree::TernaryTree(int lvl)
+TernaryTree::TernaryTree(int lvl, float yStart)
 {
+	this->yStart = yStart;
+
 	creationCompleted = false;
 	creationOngoing = false;
 	drawOngoing = false;
@@ -60,6 +67,9 @@ TernaryTree::~TernaryTree()
 	delete[] treeNodes;
 	treeNodes = nullptr;
 }
+
+
+// Private functions
 
 void TernaryTree::CreateNode(TernaryTreeNode* parent, int lvl)
 {
@@ -103,7 +113,61 @@ void TernaryTree::CreateNode(TernaryTreeNode* parent, int lvl)
 		CreateNode(current, lvl - 1);
 		CreateNode(current, lvl - 1);
 
-		current->CreateLines();
+		//current->CreateLines();
+	}
+}
+
+void TernaryTree::CreateNode2(TernaryTreeNode* parent, int lvl)
+{
+	TernaryTreeNode* current = &treeNodes[counter];
+	int ownIndex = counter++;
+
+	float xOffset = 15.0f;
+	float yOffset = 15.0f * std::pow(lvl, 2);
+
+	// Set correct position for the node
+	float y = parent->body.getPosition().y + (current->body.getSize().y * 5) + yOffset;
+	float x = parent->body.getPosition().x;
+
+	current->body.setPosition({ x, y });
+
+	if (lvl != 0)
+	{
+		CreateNode2(current, lvl - 1);
+
+		int copyAmount = 1;
+		for (int i = 1; i < lvl; i++)
+		{
+			copyAmount += std::pow(3, i);
+		}
+
+		int lvlOffset = 35.0f * (std::pow(3, lvl - 1) - 1) + xOffset;
+
+		for (int i = ownIndex; i < ownIndex + copyAmount; i++)
+		{
+			sf::Vector2f vec = treeNodes[i].body.getPosition();
+
+
+			// Offset
+			x = vec.x - 15.0f;
+			x -= lvlOffset;
+			treeNodes[i + copyAmount].body.setPosition(x, vec.y);
+
+			// Fix parent
+
+
+			// Offset
+			x = vec.x + 15.0f;
+			x += lvlOffset;
+			treeNodes[i + copyAmount * 2].body.setPosition(x, vec.y);
+
+			// Fix parent
+		}
+
+		counter += copyAmount * 2;
+
+		// --- DANGER --- DANGER ---
+		// current->CreateLines();
 	}
 }
 
@@ -131,6 +195,9 @@ void TernaryTree::Draw(sf::RenderWindow* window, TernaryTreeNode* toDraw)
 	}
 }
 
+
+// Public functions
+
 void TernaryTree::CreateNodes()
 {
 //	TernaryTreeNode* root = treeNodes[0];
@@ -138,7 +205,7 @@ void TernaryTree::CreateNodes()
 	counter++;
 //	treeNodes[0]->body = sf::RectangleShape(sf::Vector2f(30.0f, 30.0f));
 //	treeNodes[0]->body.setPosition(0, -15.0f * pow(lvl, 2));
-	root->body.setPosition(0, -15.0f * pow(lvl, 2));
+	root->body.setPosition(0, yStart * pow(lvl, 2));
 
 	if (lvl != 0)
 	{
@@ -149,7 +216,61 @@ void TernaryTree::CreateNodes()
 		CreateNode(root, lvl - 1);
 		CreateNode(root, lvl - 1);
 
-		root->CreateLines();
+		//root->CreateLines();
+
+		creationOngoing = false;
+		creationCompleted = true;
+
+		timeTaken = clock.getElapsedTime();
+	}
+}
+
+void TernaryTree::CreateNodes2()
+{
+	TernaryTreeNode* root = &treeNodes[0];
+	counter++;
+
+	root->body.setPosition(0, yStart * pow(lvl, 2));
+
+	if (lvl != 0)
+	{
+		sf::Clock clock = sf::Clock();
+		creationOngoing = true;
+
+		float xOffset = 15.0f;
+		float x;
+
+		CreateNode2(root, lvl - 1);
+
+		int copyAmount = (size - 1) / 3;
+
+		int lvlOffset = 35.0f * (std::pow(3, lvl - 1) - 1) + xOffset;
+
+		for (int i = 1; i < copyAmount; i++)
+		{
+			sf::Vector2f vec = treeNodes[i].body.getPosition();
+
+
+			// Offset
+			x = vec.x - 15.0f;
+			x -= lvlOffset;
+			treeNodes[i + copyAmount].body.setPosition(x, vec.y);
+
+			// Fix parent
+
+
+			// Offset
+			x = vec.x + 15.0f;
+			x += lvlOffset;
+			treeNodes[i + copyAmount * 2].body.setPosition(x, vec.y);
+
+			// Fix parent
+		}
+
+		counter += (counter - 1) * 2;
+
+		// --- DANGER --- DANGER ---
+		// root->CreateLines();
 
 		creationOngoing = false;
 		creationCompleted = true;
@@ -192,7 +313,6 @@ void TernaryTree::Draw2(sf::RenderWindow* window)
 //			{
 //				window->draw(treeNodes[i]->rightLine, 2, sf::Lines);
 //			}
-
 			window->draw(treeNodes[i].body);
 			if (treeNodes[i].middleLine != nullptr)
 			{
