@@ -10,7 +10,7 @@ private:
 	int lvl;
 	int size;
 	int counter;
-	TernaryTreeNode** treeNodes;
+	TernaryTreeNode* treeNodes;
 
 	int beginDraw = 0;
 
@@ -24,6 +24,9 @@ private:
 	// Recursive function used by CreateNodes
 	void CreateNode(TernaryTreeNode* parent, int lvl);
 
+	// Recursive and dynamic function used by CreateNodes2
+	void CreateNode2(TernaryTreeNode* parent, int lvl);
+
 	// Recursive private function of Draw
 	void Draw(sf::RenderWindow* window, TernaryTreeNode* toDraw);
 
@@ -32,8 +35,11 @@ public:
 	TernaryTree(int lvl);
 	virtual ~TernaryTree();
 
-	// Creates the tree structure
+	// Creates the tree structure recursively
 	void CreateNodes();
+
+	// Creates the tree structure recursively with dynamic programing
+	void CreateNodes2();
 
 	// Draws the tree recursively
 	void Draw(sf::RenderWindow* window);

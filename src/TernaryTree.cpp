@@ -10,9 +10,11 @@ TernaryTree::TernaryTree()
 	counter = 0;
 
 	size = 1;
-	treeNodes = new TernaryTreeNode*[size];
-	treeNodes[0] = new TernaryTreeNode();
-	treeNodes[0]->body = sf::RectangleShape(sf::Vector2f(30.0f, 30.0f));
+	treeNodes = new TernaryTreeNode[size];
+
+//	treeNodes = new TernaryTreeNode*[size];
+//	treeNodes[0] = new TernaryTreeNode();
+//	treeNodes[0]->body = sf::RectangleShape(sf::Vector2f(30.0f, 30.0f));
 
 	lvl = 0;
 }
@@ -31,12 +33,13 @@ TernaryTree::TernaryTree(int lvl)
 	{
 		size += std::pow(3, i);
 	}
-	treeNodes = new TernaryTreeNode*[size];
+//	treeNodes = new TernaryTreeNode*[size];
+	treeNodes = new TernaryTreeNode[size];
 
-	for(int i = 0; i < size + 1; i++)
-	{
-		treeNodes[i] = new TernaryTreeNode();
-	}
+//	for(int i = 0; i < size + 1; i++)
+//	{
+//		treeNodes[i] = new TernaryTreeNode();
+//	}
 
 	this->lvl = lvl;
 
@@ -49,18 +52,19 @@ TernaryTree::~TernaryTree()
 
 	std::cout << "Destructor called" << std::endl;
 
-	for (int i = 0; i < size; i++)
-	{
-		delete treeNodes[i];
-		treeNodes[i] = nullptr;
-	}
+//	for (int i = 0; i < size; i++)
+//	{
+//		delete treeNodes[i];
+//		treeNodes[i] = nullptr;
+//	}
 	delete[] treeNodes;
 	treeNodes = nullptr;
 }
 
 void TernaryTree::CreateNode(TernaryTreeNode* parent, int lvl)
 {
-	TernaryTreeNode* current = treeNodes[counter];
+//	TernaryTreeNode* current = treeNodes[counter];
+	TernaryTreeNode* current = &treeNodes[counter];
 	counter++;
 
 	float xOffset = 15.0f;
@@ -129,10 +133,12 @@ void TernaryTree::Draw(sf::RenderWindow* window, TernaryTreeNode* toDraw)
 
 void TernaryTree::CreateNodes()
 {
-	TernaryTreeNode* root = treeNodes[0];
+//	TernaryTreeNode* root = treeNodes[0];
+	TernaryTreeNode* root = &treeNodes[0];
 	counter++;
-	treeNodes[0]->body = sf::RectangleShape(sf::Vector2f(30.0f, 30.0f));
-	treeNodes[0]->body.setPosition(0, -15.0f * pow(lvl, 2));
+//	treeNodes[0]->body = sf::RectangleShape(sf::Vector2f(30.0f, 30.0f));
+//	treeNodes[0]->body.setPosition(0, -15.0f * pow(lvl, 2));
+	root->body.setPosition(0, -15.0f * pow(lvl, 2));
 
 	if (lvl != 0)
 	{
@@ -160,7 +166,8 @@ void TernaryTree::Draw(sf::RenderWindow* window)
 //	}
 	if (size > 0)
 	{
-		Draw(window, treeNodes[0]);
+//		Draw(window, treeNodes[0]);
+		Draw(window, &treeNodes[0]);
 	}
 }
 
@@ -172,18 +179,32 @@ void TernaryTree::Draw2(sf::RenderWindow* window)
 		int max = counter - 1;
 		for(int i = 0; i < max; i++)
 		{
-			window->draw(treeNodes[i]->body);
-			if (treeNodes[i]->middleLine != nullptr)
+//			window->draw(treeNodes[i]->body);
+//			if (treeNodes[i]->middleLine != nullptr)
+//			{
+//				window->draw(treeNodes[i]->middleLine, 2, sf::Lines);
+//			}
+//			if (treeNodes[i]->leftLine != nullptr)
+//			{
+//				window->draw(treeNodes[i]->leftLine, 2, sf::Lines);
+//			}
+//			if (treeNodes[i]->rightLine != nullptr)
+//			{
+//				window->draw(treeNodes[i]->rightLine, 2, sf::Lines);
+//			}
+
+			window->draw(treeNodes[i].body);
+			if (treeNodes[i].middleLine != nullptr)
 			{
-				window->draw(treeNodes[i]->middleLine, 2, sf::Lines);
+				window->draw(treeNodes[i].middleLine, 2, sf::Lines);
 			}
-			if (treeNodes[i]->leftLine != nullptr)
+			if (treeNodes[i].leftLine != nullptr)
 			{
-				window->draw(treeNodes[i]->leftLine, 2, sf::Lines);
+				window->draw(treeNodes[i].leftLine, 2, sf::Lines);
 			}
-			if (treeNodes[i]->rightLine != nullptr)
+			if (treeNodes[i].rightLine != nullptr)
 			{
-				window->draw(treeNodes[i]->rightLine, 2, sf::Lines);
+				window->draw(treeNodes[i].rightLine, 2, sf::Lines);
 			}
 		}
 		beginDraw = max;
