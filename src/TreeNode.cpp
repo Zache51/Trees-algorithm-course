@@ -7,9 +7,14 @@
 
 #include "TreeNode.h"
 
-TreeNode::TreeNode() {
+TreeNode::TreeNode()
+{
 	// TODO Auto-generated constructor stub
+}
 
+TreeNode::~TreeNode()
+{
+	// TODO Auto-generated destructor stub
 }
 
 sf::Vertex* TreeNode::NewLine(float xp, float yp, float xc, float yc)
@@ -19,8 +24,3 @@ sf::Vertex* TreeNode::NewLine(float xp, float yp, float xc, float yc)
 	line[1] = sf::Vertex(sf::Vector2f(xc, yc));
 	return line;
 }
-
-TreeNode::~TreeNode() {
-	// TODO Auto-generated destructor stub
-}
-

@@ -15,6 +15,7 @@ public:
 	~TernaryTreeNode();
 
 	void CreateLines();
+	void CreateLines(TernaryTreeNode* image, float lvlOffset);
 
 	//int parent;
 	TernaryTreeNode* middle;

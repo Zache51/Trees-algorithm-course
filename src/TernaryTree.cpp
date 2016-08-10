@@ -59,10 +59,10 @@ void TernaryTree::CreateNode(TernaryTreeNode* parent, int lvl)
 	counter++;
 
 	float xOffset = 15.0f;
-	float yOffset = 15.0f * std::pow(lvl, 2);
+	float yOffset = 45.0f * std::pow(lvl, 2);
 
 	// Set correct position for the node
-	float y = parent->body.getPosition().y + yOffset;
+	float y = parent->body.getPosition().y + current->body.getSize().y * 5 + yOffset;
 	float x = parent->body.getPosition().x;
 
 	if (parent->middle == nullptr)
@@ -89,7 +89,7 @@ void TernaryTree::CreateNode(TernaryTreeNode* parent, int lvl)
 		CreateNode(current, lvl - 1);
 		CreateNode(current, lvl - 1);
 
-		//current->CreateLines();
+		current->CreateLines();
 	}
 }
 
@@ -99,10 +99,10 @@ void TernaryTree::CreateNode2(TernaryTreeNode* parent, int lvl)
 	int ownIndex = counter++;
 
 	float xOffset = 15.0f;
-	float yOffset = 15.0f * std::pow(lvl, 2);
+	float yOffset = 45.0f * std::pow(lvl, 2);
 
 	// Set correct position for the node
-	float y = parent->body.getPosition().y + yOffset;
+	float y = parent->body.getPosition().y + current->body.getSize().y * 5 + yOffset;
 	float x = parent->body.getPosition().x;
 
 	current->body.setPosition({ x, y });
@@ -122,28 +122,23 @@ void TernaryTree::CreateNode2(TernaryTreeNode* parent, int lvl)
 		for (int i = ownIndex + 1; i < ownIndex + copyAmount + 1; i++)
 		{
 			sf::Vector2f vec = treeNodes[i].body.getPosition();
+			x = 15.0f + lvlOffset;
 
+			// Offset left
+			treeNodes[i + copyAmount].body.setPosition(vec.x - x, vec.y);
+			treeNodes[i + copyAmount].CreateLines(&treeNodes[i], -x);
 
-			// Offset
-			x = vec.x - 15.0f;
-			x -= lvlOffset;
-			treeNodes[i + copyAmount].body.setPosition(x, vec.y);
-
-			// Fix parent
-
-
-			// Offset
-			x = vec.x + 15.0f;
-			x += lvlOffset;
-			treeNodes[i + copyAmount * 2].body.setPosition(x, vec.y);
-
-			// Fix parent
+			// Offset right
+			treeNodes[i + copyAmount * 2].body.setPosition(vec.x + x, vec.y);
+			treeNodes[i + copyAmount * 2].CreateLines(&treeNodes[i], x);
 		}
 
-		counter += copyAmount * 2;
+		treeNodes[ownIndex].middle = &treeNodes[ownIndex + 1];
+		treeNodes[ownIndex].left = &treeNodes[ownIndex + copyAmount + 1];
+		treeNodes[ownIndex].right = &treeNodes[ownIndex + copyAmount * 2 + 1];
+		treeNodes[ownIndex].CreateLines();
 
-		// --- DANGER --- DANGER ---
-		// current->CreateLines();
+		counter += copyAmount * 2;
 	}
 }
 
@@ -190,7 +185,7 @@ void TernaryTree::CreateNodes()
 		CreateNode(root, lvl - 1);
 		CreateNode(root, lvl - 1);
 
-		//root->CreateLines();
+		root->CreateLines();
 
 		creationOngoing = false;
 		creationCompleted = true;
@@ -223,27 +218,23 @@ void TernaryTree::CreateNodes2()
 		for (int i = 1; i < copyAmount + 1; i++)
 		{
 			sf::Vector2f vec = treeNodes[i].body.getPosition();
+			x = 15.0f + lvlOffset;
 
-			// Offset
-			x = vec.x - 15.0f;
-			x -= lvlOffset;
-			treeNodes[i + copyAmount].body.setPosition(x, vec.y);
+			// Offset left
+			treeNodes[i + copyAmount].body.setPosition(vec.x - x, vec.y);
+			treeNodes[i + copyAmount].CreateLines(&treeNodes[i], -x);
 
-			// Fix parent
-
-
-			// Offset
-			x = vec.x + 15.0f;
-			x += lvlOffset;
-			treeNodes[i + copyAmount * 2].body.setPosition(x, vec.y);
-
-			// Fix parent
+			// Offset right
+			treeNodes[i + copyAmount * 2].body.setPosition(vec.x + x, vec.y);
+			treeNodes[i + copyAmount * 2].CreateLines(&treeNodes[i], x);
 		}
 
 		counter += (counter - 1) * 2;
 
-		// --- DANGER --- DANGER ---
-		// root->CreateLines();
+		root->middle = &treeNodes[1];
+		root->left = &treeNodes[copyAmount + 1];
+		root->right = &treeNodes[copyAmount * 2 + 1];
+		root->CreateLines();
 
 		creationOngoing = false;
 		creationCompleted = true;
@@ -254,13 +245,8 @@ void TernaryTree::CreateNodes2()
 
 void TernaryTree::Draw(sf::RenderWindow* window)
 {
-//	if (root != nullptr)
-//	{
-//		Draw(window, root);
-//	}
 	if (size > 0)
 	{
-//		Draw(window, treeNodes[0]);
 		Draw(window, &treeNodes[0]);
 	}
 }
@@ -273,7 +259,6 @@ void TernaryTree::Draw2(sf::RenderWindow* window)
 		int max = counter;
 		for(int i = 0; i < max; i++)
 		{
-			window->draw(treeNodes[i].body);
 			if (treeNodes[i].middleLine != nullptr)
 			{
 				window->draw(treeNodes[i].middleLine, 2, sf::Lines);
@@ -286,6 +271,7 @@ void TernaryTree::Draw2(sf::RenderWindow* window)
 			{
 				window->draw(treeNodes[i].rightLine, 2, sf::Lines);
 			}
+			window->draw(treeNodes[i].body);
 		}
 		beginDraw = max;
 
