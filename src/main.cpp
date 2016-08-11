@@ -1,29 +1,72 @@
 #include <SFML/Graphics.hpp>
-#include "BinaryTree.h"
+//#include "BinaryTree.h"
 #include "TernaryTree.h"
 
 #include <iostream>
 
-TernaryTree* ttr = new TernaryTree(12);
-TernaryTree* ttr2 = new TernaryTree(12);
+TernaryTree* ttr = new TernaryTree(12, -75.0f);
+TernaryTree* ttrdp = new TernaryTree(12, -75.0f);
 
 bool render = false;
 bool drawCompleted = false;
 bool creationOngoing = false;
 
-sf::RenderWindow window(sf::VideoMode(1920, 640), "Ternary Tree comparison");
-
-int main()
+void treeTest(TernaryTree* t, std::string type)
 {
+	if (type == "r") t->CreateNodes();
+	else if (type == "dp/r") t->CreateNodes2();
+	std::cout << "Ternary Tree " << type << ": " << t->getTimeTaken().asMilliseconds() << " milliseconds" << std::endl;
+	delete t;
+	t = nullptr;
+	sf::sleep(sf::seconds(5));
+}
+
+void performenceTest(int lowerlvl, int upperlvl)
+{
+	for (int lvl = lowerlvl; lvl < upperlvl + 1; lvl++)
+	{
+		TernaryTree* t[8];
+
+		for (int i = 0; i < 8; i++)
+		{
+			t[i] = new TernaryTree(lvl, 0);
+		}
+
+		std::cout << "Start lvl " << lvl << std::endl;
+
+		treeTest(t[0], "r");
+		treeTest(t[1], "dp/r");
+		treeTest(t[2], "r");
+		treeTest(t[3], "dp/r");
+
+		std::cout << "Start lvl " << lvl << " reverse" << std::endl;
+		sf::sleep(sf::seconds(1));
+
+		treeTest(t[4], "dp/r");
+		treeTest(t[5], "r");
+		treeTest(t[6], "dp/r");
+		treeTest(t[7], "r");
+
+		std::cout << "test for lvl " << lvl << " completed" << std::endl;
+		sf::sleep(sf::seconds(1));
+	}
+
+	sf::sleep(sf::seconds(10));
+}
+
+void demo()
+{
+	sf::RenderWindow window(sf::VideoMode(1920, 640), "Ternary Tree comparison");
+
 	// create a view with the rectangular area of the 2D world to show
-	sf::View view = window.getDefaultView();
+	 sf::View view = window.getDefaultView();
 
 	sf::Vector2i worldPos = (sf::Vector2i)view.getCenter();
 	sf::Vector2i mousePos = {0, 0};
 
 	bool drag = false;
 
-	float zoom = 30.0f;
+	float zoom = 50.0f;
 	view.setSize(window.getDefaultView().getSize());
 	view.zoom(zoom);
 	window.setView(view);
@@ -75,13 +118,13 @@ int main()
 				{
 					if (event.mouseWheelScroll.delta > 0)
 					{
-						zoom -= 5.0f;
+						zoom -= 2.0f;
 						view.setSize(window.getDefaultView().getSize());
 						view.zoom(zoom);
 					}
 					else if (event.mouseWheelScroll.delta < 0)
 					{
-						zoom += 5.0f;
+						zoom += 2.0f;
 						view.setSize(window.getDefaultView().getSize());
 						view.zoom(zoom);
 					}
@@ -125,15 +168,15 @@ int main()
 		}
 		else if (counter == 3)
 		{
-			// Ternary tree recursive2 code
+			// Ternary tree recursive dynamic programming code
 
 			// Instancing and creating
-			ttr2->CreateNodes();
-			std::cout << "Ternary Tree: " << ttr2->getTimeTaken().asMilliseconds() << " milliseconds" << std::endl;
+			ttrdp->CreateNodes2();
+			std::cout << "Ternary Tree: " << ttrdp->getTimeTaken().asMilliseconds() << " milliseconds" << std::endl;
 
 			// Graphics stuff
 			std::cout << "Drawing tree" << std::endl;
-			ttr2->Draw2(&window);
+			ttrdp->Draw2(&window);
 			std::cout << "Drawing of tree completed" << std::endl;
 			window.display();
 
@@ -142,7 +185,7 @@ int main()
 		else
 		{
 			// Graphics stuff
-			ttr2->Draw(&window);
+			ttrdp->Draw2(&window);
 			window.display();
 		}
 
@@ -150,8 +193,32 @@ int main()
 	}
 
 	// Destroy tree
-	delete ttr2;
-	ttr2 = nullptr;
+	delete ttrdp;
+	ttrdp = nullptr;
+}
+
+int main(int argc, char* argv[])
+{
+	for(int i = 0; i < argc; i++)
+	{
+		std::cout << argv[i] << std::endl;
+	}
+
+	if (argc == 2 && std::string(argv[1]) == "demo")
+	{
+		demo();
+	}
+	else if (argc == 4 && std::string(argv[1]) == "test")
+	{
+		performenceTest(std::atoi(argv[2]), std::atoi(argv[3]));
+	}
+	else
+	{
+		std::cerr << "Usage: " << argv[0] << "DEMO" << std::endl;
+		std::cerr << "or" << std::endl;
+		std::cerr << "Usage: " << argv[0] << "TEST LOWERLEVEL UPPERLEVEL" << std::endl;
+		return 1;
+	}
 
 	return 0;
 }

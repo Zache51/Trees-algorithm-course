@@ -36,16 +36,18 @@ void TernaryTreeNode::CreateLines(TernaryTreeNode* image, float lvlOffset)
 		float x = body.getPosition().x + xOffset;
 		float y = body.getPosition().y + yOffset;
 
+		sf::Vector2f bodyMiddle = sf::Vector2f(x, y);
+
 		middleLine = new sf::Vertex[2];
-		middleLine[0] = sf::Vertex(sf::Vector2f(x, y));
+		middleLine[0] = sf::Vertex(bodyMiddle);
 		middleLine[1] = sf::Vertex(image->middleLine[1].position + offvec);
 
 		leftLine = new sf::Vertex[2];
-		leftLine[0] = sf::Vertex(sf::Vector2f(x, y));
+		leftLine[0] = sf::Vertex(bodyMiddle);
 		leftLine[1] = sf::Vertex(image->leftLine[1].position + offvec);
 
 		rightLine = new sf::Vertex[2];
-		rightLine[0] = sf::Vertex(sf::Vector2f(x, y));
+		rightLine[0] = sf::Vertex(bodyMiddle);
 		rightLine[1] = sf::Vertex(image->rightLine[1].position + offvec);
 	}
 }
