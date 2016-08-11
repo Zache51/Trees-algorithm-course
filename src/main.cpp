@@ -1,15 +1,7 @@
 #include <SFML/Graphics.hpp>
-//#include "BinaryTree.h"
 #include "TernaryTree.h"
 
 #include <iostream>
-
-TernaryTree* ttr = new TernaryTree(12, -75.0f);
-TernaryTree* ttrdp = new TernaryTree(12, -75.0f);
-
-bool render = false;
-bool drawCompleted = false;
-bool creationOngoing = false;
 
 void treeTest(TernaryTree* t, std::string type)
 {
@@ -54,7 +46,7 @@ void performenceTest(int lowerlvl, int upperlvl)
 	sf::sleep(sf::seconds(10));
 }
 
-void demo()
+void demo(int lvl)
 {
 	sf::RenderWindow window(sf::VideoMode(1920, 640), "Ternary Tree comparison");
 
@@ -72,6 +64,9 @@ void demo()
 	window.setView(view);
 
 	int counter = 0;
+
+	TernaryTree* ttr = new TernaryTree(lvl, -75.0f);
+	TernaryTree* ttrdp = new TernaryTree(lvl, -75.0f);
 
 	while (window.isOpen())
 	{
@@ -204,9 +199,9 @@ int main(int argc, char* argv[])
 		std::cout << argv[i] << std::endl;
 	}
 
-	if (argc == 2 && std::string(argv[1]) == "demo")
+	if (argc == 3 && std::string(argv[1]) == "demo")
 	{
-		demo();
+		demo(std::atoi(argv[2]));
 	}
 	else if (argc == 4 && std::string(argv[1]) == "test")
 	{
@@ -214,7 +209,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		std::cerr << "Usage: " << argv[0] << "DEMO" << std::endl;
+		std::cerr << "Usage: " << argv[0] << "DEMO LEVEL" << std::endl;
 		std::cerr << "or" << std::endl;
 		std::cerr << "Usage: " << argv[0] << "TEST LOWERLEVEL UPPERLEVEL" << std::endl;
 		return 1;
