@@ -10,7 +10,6 @@ void treeTest(TernaryTree* t, std::string type)
 	std::cout << "Ternary Tree " << type << ": " << t->getTimeTaken().asMilliseconds() << " milliseconds" << std::endl;
 	delete t;
 	t = nullptr;
-	sf::sleep(sf::seconds(5));
 }
 
 void performenceTest(int lowerlvl, int upperlvl)
@@ -32,7 +31,7 @@ void performenceTest(int lowerlvl, int upperlvl)
 		treeTest(t[3], "dp/r");
 
 		std::cout << "Start lvl " << lvl << " reverse" << std::endl;
-		sf::sleep(sf::seconds(1));
+		sf::sleep(sf::seconds(0.5));
 
 		treeTest(t[4], "dp/r");
 		treeTest(t[5], "r");
@@ -40,10 +39,8 @@ void performenceTest(int lowerlvl, int upperlvl)
 		treeTest(t[7], "r");
 
 		std::cout << "test for lvl " << lvl << " completed" << std::endl;
-		sf::sleep(sf::seconds(1));
+		sf::sleep(sf::seconds(0.5));
 	}
-
-	sf::sleep(sf::seconds(10));
 }
 
 void demo(int lvl)
