@@ -89,7 +89,7 @@ void TernaryTree::CreateNode(TernaryTreeNode* parent, int lvl)
 		CreateNode(current, lvl - 1);
 		CreateNode(current, lvl - 1);
 
-		current->CreateLines();
+		//current->CreateLines();
 	}
 }
 
@@ -136,7 +136,7 @@ void TernaryTree::CreateNode2(TernaryTreeNode* parent, int lvl)
 		treeNodes[ownIndex].middle = &treeNodes[ownIndex + 1];
 		treeNodes[ownIndex].left = &treeNodes[ownIndex + copyAmount + 1];
 		treeNodes[ownIndex].right = &treeNodes[ownIndex + copyAmount * 2 + 1];
-		treeNodes[ownIndex].CreateLines();
+		//treeNodes[ownIndex].CreateLines();
 
 		counter += copyAmount * 2;
 	}
@@ -185,7 +185,7 @@ void TernaryTree::CreateNodes()
 		CreateNode(root, lvl - 1);
 		CreateNode(root, lvl - 1);
 
-		root->CreateLines();
+		//root->CreateLines();
 
 		creationOngoing = false;
 		creationCompleted = true;
@@ -234,7 +234,7 @@ void TernaryTree::CreateNodes2()
 		root->middle = &treeNodes[1];
 		root->left = &treeNodes[copyAmount + 1];
 		root->right = &treeNodes[copyAmount * 2 + 1];
-		root->CreateLines();
+		//root->CreateLines();
 
 		creationOngoing = false;
 		creationCompleted = true;
