@@ -22,10 +22,10 @@ public:
 	TernaryTreeNode* left;
 	TernaryTreeNode* right;
 
-	//sf::RectangleShape body;
-	//sf::Vertex* middleLine;
-	//sf::Vertex* leftLine;
-	//sf::Vertex* rightLine;
+	sf::RectangleShape body;
+	sf::Vertex* middleLine;
+	sf::Vertex* leftLine;
+	sf::Vertex* rightLine;
 
 };
 
