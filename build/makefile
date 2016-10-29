@@ -1,11 +1,11 @@
 EXE_LINUX := Trees-algorithm-course
-SRC := $(wildcard ../src/*.cpp)
+SRC := $(wildcard ../../src/*.cpp)
 OBJ := $(SRC:.cpp=.o)
 DEP := $(OBJ:.o=.d)
 
-CPPFLAGS := -Ilib/linux64/sfml/include -MMD -MP
+CPPFLAGS := -Ilib/sfml/include -MMD -MP
 CXXFLAGS := -std=c++11 -Wall -W -pedantic
-LDFLAGS  := -Llib/linux64/sfml/lib
+LDFLAGS  := -Llib/sfml/lib -Wl,--rpath=lib/sfml/lib
 LDLIBS   := -lsfml-graphics -lsfml-window -lsfml-system
 #LDLIBS   += -lopengl32 -lwinmm -lgdi32
 
@@ -14,7 +14,7 @@ LDLIBS   := -lsfml-graphics -lsfml-window -lsfml-system
 all: $(EXE_LINUX)
 
 $(EXE_LINUX): $(OBJ)
-	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o target/$@
+	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 clean:
 	$(RM) $(EXE_LINUX) $(OBJ) $(DEP)
