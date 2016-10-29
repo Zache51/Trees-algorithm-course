@@ -158,7 +158,7 @@ void TernaryTree::Draw(sf::RenderWindow* window, TernaryTreeNode* toDraw)
 		{
 			window->draw(toDraw->rightLine, 2, sf::Lines);
 		}
-
+	
 		window->draw(toDraw->body);
 		Draw(window, toDraw->middle);
 		Draw(window, toDraw->left);

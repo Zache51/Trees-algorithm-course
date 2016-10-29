@@ -70,12 +70,12 @@ TernaryTreeNode::TernaryTreeNode()
 
 TernaryTreeNode::~TernaryTreeNode()
 {
-	delete middleLine;
+	delete[] middleLine;
 	middleLine = nullptr;
 
-	delete rightLine;
+	delete[] rightLine;
 	rightLine = nullptr;
 
-	delete leftLine;
+	delete[] leftLine;
 	leftLine = nullptr;
 }

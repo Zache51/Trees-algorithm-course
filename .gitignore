@@ -3,3 +3,9 @@
 
 # Compiled Object files
 *.o
+
+# Directories
+build/target*
+
+# Temporary files
+*~
