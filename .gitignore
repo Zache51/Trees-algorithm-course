@@ -5,6 +5,7 @@
 *.o
 
 # Directories
+build/lib
 build/target*
 
 # Temporary files
