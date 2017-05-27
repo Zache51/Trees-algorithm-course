@@ -4,7 +4,7 @@ OBJ := $(SRC:.cpp=.o)
 DEP := $(OBJ:.o=.d)
 
 CPPFLAGS := -Ilib/sfml/include -MMD -MP
-CXXFLAGS := -std=c++11 -Wall -W -pedantic
+CXXFLAGS := -std=c++11 -g -Wall -W -pedantic
 LDFLAGS  := -Llib/sfml/lib -Wl,--rpath=lib/sfml/lib
 LDLIBS   := -lsfml-graphics -lsfml-window -lsfml-system
 #LDLIBS   += -lopengl32 -lwinmm -lgdi32
