@@ -5,18 +5,22 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
+#include "colors.h"
 
 using namespace std;
 
 class Sorting
 {
 private:
+  int counter;
   std::vector<std::vector<int>> printvector;
 
   vector<int> RandomizeArray(int size);
   void PrintArray(vector<int> array);
 
-  void QuickSort(vector<int> array, int pivot, int left, int right);
+  void PrintQuickSortStage(vector<int>* array, int left, int right, int pivot);
+  void QuickSort(vector<int>* array, int left, int pivot);
+
   void MergeSort(vector<int>* permanent, vector<int>* temporary, int start, int end, int lvl);
 
 public:
