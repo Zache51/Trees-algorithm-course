@@ -21,6 +21,11 @@ int main(int argc, char* argv[])
 			error = false;
 			sorting.MergeSort(std::atoi(argv[2]));
 		}
+		else if (std::string(argv[1]) == "countingsort")
+		{
+			error = false;
+			sorting.CountingSort(std::atoi(argv[2]));
+		}
 	}
 
 	if (error)
@@ -28,6 +33,9 @@ int main(int argc, char* argv[])
 		std::cerr << "Usage: " << argv[0] << " quicksort [size]" << std::endl;
 		std::cerr << "or" << std::endl;
 		std::cerr << "Usage: " << argv[0] << " mergesort [size]" << std::endl;
+		std::cerr << "or" << std::endl;
+		std::cerr << "Usage: " << argv[0] << " countingsort [size]" << std::endl;
+		std::cerr << "or" << std::endl;
 		return 1;
 	}
 

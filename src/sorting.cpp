@@ -26,6 +26,83 @@
     std::cout << oss.str() << std::endl;
   }
 
+  /*** Counting sort *************************************************/
+
+  void Sorting::PrintCountingSortStage(int index)
+  {
+    for (int i = 0; i < (int)printvector[0].size(); i++) {
+      std::string message = to_string(printvector[0][i]);
+      if (i == index){
+        message = TeCo::color_it(TeCo::red, message);
+      }
+      cout << message << " ";
+    }
+    cout << endl;
+
+    for (int i = 0; i < (int)printvector[2].size(); i++) {
+      std::string message = to_string(printvector[2][i]);
+      if (i == printvector[0][index]){
+        message = TeCo::color_it(TeCo::yellow, message);
+      }
+      cout << message << " ";
+    }
+    cout << endl;
+
+    for (int i = 0; i < (int)printvector[3].size(); i++) {
+      std::string message = to_string(printvector[3][i]);
+      if (i == printvector[2][ printvector[0][index]] - 1){
+        message = TeCo::color_it(TeCo::green, message);
+      }
+      cout << message << " ";
+    }
+    cout << endl;
+    //PrintArray(printvector[3]);
+    // printvector[2][ printvector[0][i] ]
+  }
+
+  void Sorting::CountingSort(int size)
+  {
+    // Create unsorted array
+    int keys = 20;
+    printvector.push_back(RandomizeArray(size, keys));
+    PrintArray(printvector[0]);
+
+    // Complete and print out the first stage
+    printvector.push_back(std::vector<int>());
+    for (int i = 0; i < keys; i++) {
+      printvector[1].push_back(0);
+    }
+    for (int i = 0; i < size; i++) {
+      printvector[1][printvector[0][i]]++;
+    }
+    PrintArray(printvector[1]);
+
+    // Complete and print out the second stage
+    printvector.push_back(std::vector<int>());
+    for (int i = 0; i < keys; i++) {
+      printvector[2].push_back(0);
+    }
+    for (int i = 0; i < keys-1; i++) {
+      printvector[2][i + 1] = printvector[2][i] + printvector[1][i];
+    }
+    PrintArray(printvector[2]);
+
+    // Complete and print out the third and final stage
+    printvector.push_back(std::vector<int>());
+    for (int i = 0; i < size; i++) {
+      printvector[3].push_back(-1);
+    }
+    cout << std::endl;
+    for (int i = 0; i < size; i++) {
+      printvector[3][ printvector[2][ printvector[0][i] ] ] = printvector[0][i];
+      printvector[2][ printvector[0][i] ]++;
+      PrintCountingSortStage(i);
+      cout << std::endl;
+    }
+
+  }
+
+  /*** End of counting sort ******************************************/
   /*** QuickSort *****************************************************/
 
   void Sorting::PrintQuickSortStage(vector<int>* array, int left, int right, int pivot)
@@ -122,7 +199,7 @@
     printvector.clear();
   }
 
-
+  /*** End of quicksort **********************************************/
   /*** MergeSort *****************************************************/
 
   void Sorting::MergeSort(vector<int>* permanent, vector<int>* temporary, int start, int end, int lvl)
@@ -203,3 +280,5 @@
 
     printvector.clear();
   }
+
+  /*** End of mergesort **********************************************/
