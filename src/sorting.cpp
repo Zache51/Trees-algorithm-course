@@ -5,12 +5,12 @@
     srand (time(NULL));
   }
 
-  vector<int> Sorting::RandomizeArray(int size)
+  vector<int> Sorting::RandomizeArray(int size, int max_random)
   {
     vector<int> ivector(size);
     for (int i = 0; i < size; i++)
     {
-      ivector[i] = rand() % 100;
+      ivector[i] = rand() % max_random;
     }
     return ivector;
   }
@@ -107,7 +107,7 @@
 
   void Sorting::QuickSort(int size)
   {
-    vector<int> ivector = RandomizeArray(size);
+    vector<int> ivector = RandomizeArray(size, 100);
 
     printvector.push_back(vector<int>());
     for (int i = 0; i < size; i++) {
@@ -184,7 +184,7 @@
   void Sorting::MergeSort(int size)
   {
 
-    vector<int> ivector = RandomizeArray(size);
+    vector<int> ivector = RandomizeArray(size, 100);
 
     int maxlevel = std::log2(size) + 2;
     for (int i = 0; i < maxlevel; i++) {

@@ -15,7 +15,7 @@ private:
   int counter;
   std::vector<std::vector<int>> printvector;
 
-  vector<int> RandomizeArray(int size);
+  vector<int> RandomizeArray(int size, int max_random);
   void PrintArray(vector<int> array);
 
   void PrintQuickSortStage(vector<int>* array, int left, int right, int pivot);
